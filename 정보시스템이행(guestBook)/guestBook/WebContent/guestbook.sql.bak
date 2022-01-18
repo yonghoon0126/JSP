@@ -1,0 +1,21 @@
+drop table guestbook;                
+ create table guestbook(
+ 	gb_id         number primary key,      --각각의 게시물을 구분하는 고유 번호  
+	gb_name       varchar2(15) not null,   --작성자의 이름  
+	gb_email      varchar2(50) ,           --작성의 이메일
+	gb_passwd     varchar2(6) not null,    --수정, 삭제를 위한 비밀번호
+	gb_tel        varchar2(20) not null,    --전화번호
+ 	gb_date       date not null,           --작성일
+	gb_contents   varchar2(500)           --게시물 내용
+);
+drop sequence guestbook_seq;
+create sequence guestbook_seq ;
+
+create or replace trigger bi_guestbook
+	before insert on guestbook
+	for each row
+begin 
+	select GUESTBOOK_seq.nextval into :NEW.GB_ID from dual;
+end ;
+
+alter trigger bi_guestbook enable;
